@@ -1,4 +1,3 @@
-// let authors, categories, datas = ['meh'];
 let authors = [];
 let categories= [];
 let mainContainer = document.querySelector("#container");
@@ -55,13 +54,18 @@ fetch(apiUrl)
             // bookCard.appendChild(bookNbPages);
             // bookCard.appendChild(bookDescription);
             // bookCard.appendChild(bookDescription);
+
+
     
             mainContainer.insertBefore(bookCard, loader);
-            // console.log(typeof(book.authors))
+
             book.authors.forEach((author => {authors.push(author)}));
             book.categories.forEach((category => {categories.push(category)}));
             
-            
+            let authorsString =  JSON.stringify(book.authors);
+            let categoriesString = JSON.stringify(book.categories);
+            bookCard.setAttribute("authors", authorsString);
+            bookCard.setAttribute("categories", categoriesString);
         }
         setTimeout(async ()=>{
             loadOne();
@@ -84,22 +88,24 @@ fetch(apiUrl)
 }
 
 function loadAuthor(){
-    return loadSelect("author");
+    return loadSelect("authors");
 }
 
 function loadCategory(){
-    return loadSelect("category");
+    return loadSelect("categories");
 }
 
 function loadSelect(type){
     let select, key;
     switch(type){
-        case "author":
+        case "authors":
             select = document.querySelector("#authors");
+            select.innerHTML='';
             key = authors;
             break;
-        case "category":
+        case "categories":
             select = document.querySelector("#categories");
+            select.innerHTML='';
             key = categories;
             break;
     }
@@ -109,11 +115,15 @@ function loadSelect(type){
         select.appendChild(option);
     }))
 
-    select.addEventListener("change", updateMainFrame())
+    select.addEventListener("change", 
+        () =>
+        {
+            updateMainFrame(type); 
+        })
 }
 
-function updateMainFrame(){
-    console.log('meh')
+function updateMainFrame(type){
+    const cards = document.querySelectorAll("article");
 }
 
 async function init(){
