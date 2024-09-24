@@ -1,5 +1,12 @@
-let authors, categories, datas;
+// let authors, categories, datas = ['meh'];
+let authors = [];
+let categories= [];
 let mainContainer = document.querySelector("#container");
+let authorSelect = document.querySelector("#authors");
+
+function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+}
 
 async function loadMainFrame(){
 // Define the API endpoint
@@ -13,15 +20,14 @@ fetch(apiUrl)
     return response.json(); // Parse the JSON response
   })
   .then(async (data) => {
+    
 
     const loader = mainContainer.querySelector(".loader");
     // display all datas
     var count = 0;
     let total = Object.keys(data).length;
     
-
     for (let index in data){
-        // break;
         const loadOne = async () => {
             count++;
             const book = data[index];
@@ -39,7 +45,7 @@ fetch(apiUrl)
                 bookPic.src = book['thumbnailUrl'];
             }
             else{
-                bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png?';
+                bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
             }
     
             bookCard.appendChild(bookPic);
@@ -51,15 +57,19 @@ fetch(apiUrl)
             // bookCard.appendChild(bookDescription);
     
             mainContainer.insertBefore(bookCard, loader);
-            window.scrollTo(0, document.body.scrollHeight);
+            // console.log(typeof(book.authors))
+            book.authors.forEach((author => {authors.push(author)}));
+            book.categories.forEach((category => {categories.push(category)}));
+            
+            
         }
-        // loadOne();
         setTimeout(async ()=>{
             loadOne();
-            await loadOne;
             if (count == total){
                 if (mainContainer.contains(loader)){
                     mainContainer.removeChild(loader);
+                    loadAuthor();
+                    loadCategory();
                 }
             }
         }
@@ -85,26 +95,30 @@ function loadSelect(type){
     let select, key;
     switch(type){
         case "author":
-            select = document.querySelector("#author");
-            key = "categories";
+            select = document.querySelector("#authors");
+            key = authors;
             break;
         case "category":
-            select = document.querySelector("#category");
-            key = "authors";
+            select = document.querySelector("#categories");
+            key = categories;
             break;
     }
-    console.log(select);
+    let uniqueAuthors = key.filter(onlyUnique).sort();
+    uniqueAuthors.forEach((obj => {
+        const option = new Option (obj, obj);
+        select.appendChild(option);
+    }))
+
+    select.addEventListener("change", updateMainFrame())
 }
 
+function updateMainFrame(){
+    console.log('meh')
+}
 
-
-
-function init(){
+async function init(){
     loadMainFrame();
-    loadAuthor();
-    loadCategory();
 }
-
 
 
 init()
