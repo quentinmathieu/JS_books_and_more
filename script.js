@@ -142,11 +142,12 @@ function updateMainFrame(type, select){
     cardsArray.forEach(card =>{
         const arrayType = JSON.parse(card.getAttribute(type));
         //  display all cards if nothing is selected
-        if (selected.selectedIndex == 0){
+        if (select.selectedIndex == 0){
             card.classList.remove("hidden");
+            console.log("0")
         }
         // If card contains author / category and have hidden class
-        if (arrayType.includes(selected)){
+        else if (arrayType.includes(selected)){
             // then show the card
             card.classList.remove("hidden");
         }
