@@ -2,6 +2,7 @@ let authors = [];
 let categories= [];
 let mainContainer = document.querySelector("#container");
 let authorSelect = document.querySelector("#authors");
+let modal = document.querySelector('#default-modal');
 
 document.querySelector('html').classList.add("text-[calc(3rem-clamp(1.5rem,3vw,2rem))]")
 
@@ -10,7 +11,45 @@ function onlyUnique(value, index, array) {
 }
 
 function modalBook(book){
+    const imgDOM = modal.querySelector('img');
+    const titleDOM = modal.querySelector('h3');
+    const authorsDOM = modal.querySelector('#authors-modal');
+    const isbnDOM = modal.querySelector('#isbn-modal');
+    const pagesDOM = modal.querySelector('#pages-modal');
+    const dateDOM = modal.querySelector('#date-modal');
+    const categoriesDOM = modal.querySelector('#categories-modal');
+    const descriptionDOM = modal.querySelector('#description-modal');
 
+
+    titleDOM.innerHTML = book.title;
+    if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
+        imgDOM.src = book.thumbnailUrl;
+    }
+    else{
+        imgDOM.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
+    }
+    let authors = "";
+    book.authors.forEach((author) => {authors+=(author+", ")});
+    authorsDOM.innerHTML = `<strong>Authors : </strong>${authors.substring(0, authors.length-2)}`;
+    isbnDOM.innerHTML = `<strong>ISBN : </strong>${book.isbn}`;;
+    pagesDOM.innerHTML = `<strong>Pages : </strong>${book.pageCount}`
+    try {
+        let date = Date.parse(book['publishedDate']['dt_txt']);
+        let year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+        let month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
+        let day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+        dateDOM.innerHTML = `<strong>Published date</strong> : ${day}-${month}-${year}`;
+    }
+    catch{
+        dateDOM.innerHTML = `<strong>Published date</strong> : Unknown`;
+    }
+    let categories = "";
+    book.categories.forEach((category) => {categories+=(category+", ")});
+    categoriesDOM.innerHTML = `<strong>Categories : </strong>${categories.substring(0, categories.length-2)}`
+
+    descriptionDOM.innerHTML = `<strong>Description : </strong>${book.longDescription}`;;
+
+    modal.classList.toggle("hidden");
 }
 
 // fill and add card to the DOM
@@ -99,8 +138,10 @@ fetch(apiUrl)
             count++;
             const book = data[index];
             let bookCard = createCard(book);
-            bookCard.addEventListener("click", modalBook(book));
-            
+            bookCard.addEventListener("click", () =>
+                {
+                    modalBook(book)
+                });
             mainContainer.insertBefore(bookCard, loader);
 
             book.authors.forEach((author => {authors.push(author)}));
@@ -202,6 +243,7 @@ function updateMainFrame(type, select){
 
 async function init(){
     loadMainFrame();
+    modal.querySelectorAll('.close-modal').forEach((btn)=>{btn.addEventListener("click", () => {modal.classList.add("hidden")})});
 }
 
 
