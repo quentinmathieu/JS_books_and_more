@@ -9,18 +9,23 @@ function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
 }
 
+function modalBook(book){
+
+}
+
 // fill and add card to the DOM
 function createCard(book){
     let bookCard = document.createElement("article");
 
-    bookCard.setAttribute("class","book-card max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-2 group cursor-pointer");
-    
+    bookCard.setAttribute("class","book-card max-w-sm bg-white border border-gray-200 hover:border-gray-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-3 group cursor-pointer flex flex-col justify-between");
     let bookPicContainer = document.createElement('div');
-    bookPicContainer.setAttribute("class","w-1/2 m-auto rounded-lg overflow-hidden md:w-2/3");
+    bookPicContainer.setAttribute("class","w-1/2  m-auto rounded-lg overflow-hidden md:w-2/3 aspect-[15/18] flex flex-column items-center justify-center");
     let bookPic = document.createElement('img');
-    bookPic.setAttribute("class","w-full scale-scale-125 group-hover:scale-150 transition-all duration-300");
+    bookPic.setAttribute("class","w-full scale-scale-[105%] group-hover:scale-[110%] transition-all duration-300 grayscale-[30%] group-hover:grayscale-[-10%]");
     bookPic.src = book.thumbnailUrl;
     bookPicContainer.appendChild(bookPic);
+
+    let readMore = document.createElement("button");
     
     let bookTitle= document.createElement("h3");
     bookTitle.setAttribute("class","mb-4 text-xl font-semibold leading-none tracking-tight text-gray-900 dark:text-white mt-2");
@@ -48,15 +53,24 @@ function createCard(book){
     catch{
         bookDate.innerHTML = `<em>Published date</em> : Unknown`;
     }
-    
+    readMore.innerHTML= `Read more
+             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>`
+    readMore.setAttribute("class", "text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:text-black dark:bg-gray-100 dark:border dark:hover:bg-gray-200 dark:focus:ring-gray-200 mt-2 flex items-center")
 
 
     // append each element to the card
     bookCard.appendChild(bookPicContainer);
-    bookCard.appendChild(bookTitle);
-    bookCard.appendChild(bookISBN);
-    bookCard.appendChild(bookDate);
-    bookCard.appendChild(bookNbPages);
+    let textContainer = document.createElement('div');
+    textContainer.appendChild(bookTitle);
+    textContainer.appendChild(bookISBN);
+    textContainer.appendChild(bookDate);
+    textContainer.appendChild(bookNbPages);
+    textContainer.appendChild(readMore);
+    bookCard.appendChild(textContainer);
+    
+
 
     return bookCard;
 }
@@ -85,8 +99,8 @@ fetch(apiUrl)
             count++;
             const book = data[index];
             let bookCard = createCard(book);
+            bookCard.addEventListener("click", modalBook(book));
             
-    
             mainContainer.insertBefore(bookCard, loader);
 
             book.authors.forEach((author => {authors.push(author)}));
