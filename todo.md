@@ -1,10 +1,10 @@
 ### TODO
 
-* **show mainframe content**
-* **show select / options**
+* ~~**show mainframe content**~~
+* ~~**show select / options**~~
 * **select author AND/OR category**
 * create component
 * pagination
-* async
+* ~~async~~
 * alert
 * admin crud

@@ -31,6 +31,7 @@ fetch(apiUrl)
             count++;
             const book = data[index];
             let bookCard = document.createElement("article");
+            bookCard.classList.add("book-card");
 
             let bookPic = document.createElement('img');
             bookPic.src = book.thumbnailUrl;
@@ -118,12 +119,27 @@ function loadSelect(type){
     select.addEventListener("change", 
         () =>
         {
-            updateMainFrame(type); 
+            updateMainFrame(type, select); 
         })
 }
 
-function updateMainFrame(type){
-    const cards = document.querySelectorAll("article");
+function updateMainFrame(type, select){
+    const cards = document.querySelectorAll(".book-card");
+    const cardsArray = [...cards];
+    const selected = select.options[select.selectedIndex].text;
+
+    cardsArray.forEach(card =>{
+        const arrayType = JSON.parse(card.getAttribute(type));
+        // If card contains author / category and have hidden class
+        if (arrayType.includes(selected) && card.classList.contains("hidden")){
+            // then show the card
+            card.classList.remove("hidden");
+        }
+        // Else hide the card
+        else{
+            card.classList.add("hidden");
+        }
+    });
 }
 
 async function init(){
