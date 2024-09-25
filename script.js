@@ -3,10 +3,62 @@ let categories= [];
 let mainContainer = document.querySelector("#container");
 let authorSelect = document.querySelector("#authors");
 
-document.querySelector('html').classList.add("text-[calc(3rem-clamp(1.25rem,3cqw,2rem))]")
+document.querySelector('html').classList.add("text-[calc(3rem-clamp(1.5rem,3vw,2rem))]")
 
 function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
+}
+
+// fill and add card to the DOM
+function createCard(book){
+    let bookCard = document.createElement("article");
+
+    bookCard.setAttribute("class","book-card max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-2 group cursor-pointer");
+    
+    let bookPicContainer = document.createElement('div');
+    bookPicContainer.setAttribute("class","w-1/2 m-auto rounded-lg overflow-hidden md:w-2/3");
+    let bookPic = document.createElement('img');
+    bookPic.setAttribute("class","w-full scale-scale-125 group-hover:scale-150 transition-all duration-300");
+    bookPic.src = book.thumbnailUrl;
+    bookPicContainer.appendChild(bookPic);
+    
+    let bookTitle= document.createElement("h3");
+    bookTitle.setAttribute("class","mb-4 text-xl font-semibold leading-none tracking-tight text-gray-900 dark:text-white mt-2");
+    let bookISBN= document.createElement("p");
+	let bookDate= document.createElement("p");
+	let bookNbPages= document.createElement("p");
+
+    // fill each HTML element of the card
+    if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
+        bookPic.src = book['thumbnailUrl'];
+    }
+    else{
+        bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
+    }
+    bookTitle.innerHTML = book['title'];
+    bookISBN.innerHTML = `<em>ISBN</em> : ${book['isbn']}`;
+
+    try {
+        let date = Date.parse(book['publishedDate']['dt_txt']);
+        let year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+        let month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
+        let day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+        bookDate.innerHTML = `<em>Published date</em> : ${day}-${month}-${year}`;
+    }
+    catch{
+        bookDate.innerHTML = `<em>Published date</em> : Unknown`;
+    }
+    
+
+
+    // append each element to the card
+    bookCard.appendChild(bookPicContainer);
+    bookCard.appendChild(bookTitle);
+    bookCard.appendChild(bookISBN);
+    bookCard.appendChild(bookDate);
+    bookCard.appendChild(bookNbPages);
+
+    return bookCard;
 }
 
 async function loadMainFrame(){
@@ -32,33 +84,8 @@ fetch(apiUrl)
         const loadOne = async () => {
             count++;
             const book = data[index];
-            let bookCard = document.createElement("article");
-            bookCard.classList.add("book-card");
-
-            let bookPic = document.createElement('img');
-            bookPic.src = book.thumbnailUrl;
-            document.body.appendChild(bookPic);
+            let bookCard = createCard(book);
             
-            let bookTitle= document.createElement("h3");
-            // let bookISBN, bookDate, bookNbPages, bookDescription= document.createElement("p");
-            
-            bookTitle.innerHTML = book['title'];
-            if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
-                bookPic.src = book['thumbnailUrl'];
-            }
-            else{
-                bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
-            }
-    
-            bookCard.appendChild(bookPic);
-            bookCard.appendChild(bookTitle);
-            // bookCard.appendChild(bookISBN);
-            // bookCard.appendChild(bookDate);
-            // bookCard.appendChild(bookNbPages);
-            // bookCard.appendChild(bookDescription);
-            // bookCard.appendChild(bookDescription);
-
-
     
             mainContainer.insertBefore(bookCard, loader);
 
@@ -146,7 +173,6 @@ function updateMainFrame(type, select){
         //  display all cards if nothing is selected
         if (select.selectedIndex == 0){
             card.classList.remove("hidden");
-            console.log("0")
         }
         // If card contains author / category and have hidden class
         else if (arrayType.includes(selected)){
