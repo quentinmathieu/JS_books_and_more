@@ -3,6 +3,8 @@ let categories= [];
 let mainContainer = document.querySelector("#container");
 let authorSelect = document.querySelector("#authors");
 
+document.querySelector('html').classList.add("text-[calc(3rem-clamp(1.25rem,3cqw,2rem))]")
+
 function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
 }
@@ -114,7 +116,7 @@ function loadSelect(type){
     uniqueAuthors.forEach((obj => {
         const option = new Option (obj, obj);
         option.classList.add("max-w-full");
-        select.appendChild(option);
+        select.appendChild(option); 
     }))
 
     select.addEventListener("change", 
