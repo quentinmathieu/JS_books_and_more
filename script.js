@@ -113,25 +113,40 @@ function loadSelect(type){
     let uniqueAuthors = key.filter(onlyUnique).sort();
     uniqueAuthors.forEach((obj => {
         const option = new Option (obj, obj);
+        option.classList.add("max-w-full");
         select.appendChild(option);
     }))
 
     select.addEventListener("change", 
         () =>
         {
-            updateMainFrame(type, select); 
+            updateMainFrame(type, select);
         })
 }
 
 function updateMainFrame(type, select){
+    // reinit the other select
+    switch(type){
+        case 'authors':
+            document.querySelector("#categories").selectedIndex = 0;
+            break;
+        case 'categories':
+            document.querySelector("#authors").selectedIndex = 0;
+            break;
+    }
+
     const cards = document.querySelectorAll(".book-card");
     const cardsArray = [...cards];
     const selected = select.options[select.selectedIndex].text;
 
     cardsArray.forEach(card =>{
         const arrayType = JSON.parse(card.getAttribute(type));
+        //  display all cards if nothing is selected
+        if (selected.selectedIndex == 0){
+            card.classList.remove("hidden");
+        }
         // If card contains author / category and have hidden class
-        if (arrayType.includes(selected) && card.classList.contains("hidden")){
+        if (arrayType.includes(selected)){
             // then show the card
             card.classList.remove("hidden");
         }

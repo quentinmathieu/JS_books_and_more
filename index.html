@@ -7,17 +7,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
 </head>
-<body>
+<body class="bg-white dark:bg-gray-900 p-2">
 
     <div id="wrapper">
         <h1 class="text-3xl font-bold underline">Books and more</h1>
-        <select name="" id="authors">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filter by author</label>
+        <select name="" id="authors" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-1">
             <option output="status" class="loader">
                
                 <option class="sr-only" selected>Loading...</option>
             </option>
         </select>
-        <select name="" id="categories">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Filter by category</label>
+        <select name="" id="categories" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-1">
             <option output="status" class="loader">
                
                 <option class="sr-only" selected>Loading...</option>
