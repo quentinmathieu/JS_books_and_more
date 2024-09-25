@@ -2,6 +2,8 @@ let authors = [];
 let categories= [];
 let mainContainer = document.querySelector("#container");
 let authorSelect = document.querySelector("#authors");
+let activeAuthors = [];
+let activeCategories = [];
 
 function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
@@ -78,7 +80,7 @@ fetch(apiUrl)
                 }
             }
         }
-        , 1*index);
+        , 100*index);
     }  })
   .then(
     
@@ -128,17 +130,69 @@ function updateMainFrame(type, select){
     const cardsArray = [...cards];
     const selected = select.options[select.selectedIndex].text;
 
+    switch(type){
+        case 'authors':
+            activeAuthors = [];
+            break;
+        case 'categories':
+            activeCategories = [];
+            break;
+    }
+
+    console.log(activeAuthors)
+    console.log(activeCategories)
+
+    if (select.selectedIndex == 0 && activeAuthors.length == 0 && activeCategories.length == 0){
+        arrayType.forEach(card=>{card.classList.remove("hidden")});
+    }
+    else if (select.selectedIndex == 0 && (activeAuthors.length > 0 || activeCategories.length > 0)){
+        
+    }
+
     cardsArray.forEach(card =>{
         const arrayType = JSON.parse(card.getAttribute(type));
-        // If card contains author / category and have hidden class
-        if (arrayType.includes(selected) && card.classList.contains("hidden")){
-            // then show the card
-            card.classList.remove("hidden");
-        }
-        // Else hide the card
-        else{
-            card.classList.add("hidden");
-        }
+        // show all if nothing is selected
+        
+        
+
+        // show all if nothing is selected
+        // if (select.selectedIndex == 0 && card.classList.contains("hidden")){
+        //     card.classList.remove("hidden");
+        // }
+        // // If card contains author / category and have hidden class
+        // else if (arrayType.includes(selected)){
+        //     // then show the card
+        //     switch(type){
+        //         case 'authors':
+        //             if(activeCategories.length == 0){
+        //                 card.classList.remove("hidden");
+        //             }
+        //             else if (activeCategories.includes(card)) {
+        //                 card.classList.remove("hidden");
+        //             }
+        //             else{
+        //                 card.classList.add("hidden");
+        //             }
+        //             activeAuthors.push(card);
+        //             break;
+        //         case 'categories':
+        //             if(activeAuthors.length == 0){
+        //                 card.classList.remove("hidden");
+        //             }
+        //             else if (activeAuthors.includes(card)) {
+        //                 card.classList.remove("hidden");
+        //             }
+        //             else{
+        //                 card.classList.add("hidden");
+        //             }
+        //             activeCategories.push(card);
+        //             break;
+        //     }
+        // }
+        // // Else hide the card
+        // else{
+        //     card.classList.add("hidden");
+        // }
     });
 }
 
