@@ -2,9 +2,9 @@
 
 * ~~**show mainframe content**~~
 * ~~**show select / options**~~
-* **select author AND/OR category**
-* create component
-* pagination
+* ~~**select author AND/OR category**~~
 * ~~async~~
-* alert
-* admin crud
+* ~~reset scroll on opening modal~~
+* ~~close modal on focus out~~
+* center spinner when loading
+* fix img bad url bug

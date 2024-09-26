@@ -10,7 +10,22 @@ function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
 }
 
+
+//hide modal where click outside it
+document.addEventListener('click', function (event) { 
+    const outsideClick = !document.getElementById('modal-content').contains(event.target);
+    const helpSectionClicked = document.getElementById('default-modal').contains(event.target)
+    const defaultmodal = document.getElementById('default-modal')
+    
+    if (outsideClick && helpSectionClicked) { 
+        defaultmodal.classList.toggle("hidden")
+    }
+});
+
+
+// show modal
 function modalBook(book){
+    // create each dom element for modal
     const imgDOM = modal.querySelector('img');
     const titleDOM = modal.querySelector('h3');
     const authorsDOM = modal.querySelector('#authors-modal');
@@ -21,6 +36,7 @@ function modalBook(book){
     const descriptionDOM = modal.querySelector('#description-modal');
 
 
+    // fill each element of the modal
     titleDOM.innerHTML = book.title;
     if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
         imgDOM.src = book.thumbnailUrl;
@@ -50,6 +66,8 @@ function modalBook(book){
     descriptionDOM.innerHTML = `<strong>Description : </strong>${book.longDescription}`;;
 
     modal.classList.toggle("hidden");
+    // reset scroll
+    document.querySelector("#default-modal").scrollTop = 0;
 }
 
 // fill and add card to the DOM
