@@ -40,6 +40,9 @@ function modalBook(book){
     titleDOM.innerHTML = book.title;
     if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
         imgDOM.src = book.thumbnailUrl;
+        imgDOM.addEventListener("error", () => {
+            imgDOM.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
+        });
     }
     else{
         imgDOM.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
@@ -93,6 +96,9 @@ function createCard(book){
     // fill each HTML element of the card
     if (typeof(book['thumbnailUrl']) != 'undefined' && book['thumbnailUrl'].length > 0){
         bookPic.src = book['thumbnailUrl'];
+        bookPic.addEventListener("error", () => {
+            bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
+        });
     }
     else{
         bookPic.src =  'https://p1.storage.canalblog.com/14/48/1145642/91330992_o.png';
