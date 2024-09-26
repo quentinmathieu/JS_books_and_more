@@ -218,12 +218,13 @@ function loadSelect(type){
             key = categories;
             break;
     }
-    let uniqueAuthors = key.filter(onlyUnique).sort();
-    uniqueAuthors.forEach((obj => {
+    let uniqueSelectList = key.filter(onlyUnique).sort();
+    uniqueSelectList.forEach((obj => {
         const option = new Option (obj, obj);
         option.classList.add("max-w-full");
-        select.appendChild(option); 
-    }))
+        select.appendChild(option);
+    }));
+    select.removeAttribute("disabled");
 
     select.addEventListener("change", 
         () =>
